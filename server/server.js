@@ -1,31 +1,41 @@
-const express = require("express"); 
-const app = express(); 
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 const cors = require("cors");
-const bodyParser = require("body-parser"); 
-const port = 5000; 
-const dotenv = require('dotenv');
-dotenv.config
 
+const app = express();
+const port = process.env.PORT || 5000;
 
-
-
-
-
-
-
-
-//use express static folder
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("./public"));
 
-app.listen(port, () => {
-    try {
-        console.log(`Server is running ${port}`);
+const httpServer = http.createServer(app);
 
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
+// Configure the Socket.IO server
+const io = new Server(httpServer, {
+  cors: {
+    origin: "https://live-stream-server-pearl.vercel.app", // Update with your Vercel frontend
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+    credentials: true,
+  },
+});
+
+// Handle WebSocket connections
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  // Broadcast a message to all clients except the sender
+  socket.on("stream-data", (data) => {
+    socket.broadcast.emit("stream-data", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
+});
+
+// Start the server
+httpServer.listen(port, () => {
+  console.log(`WebSocket server is running on port ${port}`);
 });
