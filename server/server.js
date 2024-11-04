@@ -14,7 +14,7 @@ const httpServer = http.createServer(app);
 // Configure the Socket.IO server
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://live-stream-server-pearl.vercel.app", // Update with your Vercel frontend
+    origin: " http://localhost:5173", // Update with your Vercel frontend
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
     credentials: true,
@@ -25,9 +25,10 @@ const io = new Server(httpServer, {
 io.on("connection", (socket) => {
   console.log("A user connected");
 
-  // Broadcast a message to all clients except the sender
-  socket.on("stream-data", (data) => {
-    socket.broadcast.emit("stream-data", data);
+  // Receive video data from the client and broadcast to all clients
+  socket.on("stream-data", (chunk) => {
+    // Broadcast the chunk to all clients except the sender
+    socket.broadcast.emit("stream-data", chunk);
   });
 
   socket.on("disconnect", () => {
