@@ -4,7 +4,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 
 const app = express();
-const port = process.env.PORT || 5003;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.static("./public"));
@@ -14,6 +14,7 @@ const httpServer = http.createServer(app);
 // Configure the Socket.IO server
 const io = new Server(httpServer, {
   cors: {
+    // origin: " http://localhost:5173", 
     origin: "https://live-stream-client.vercel.app/", // Update with your Vercel frontend
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
@@ -28,6 +29,8 @@ io.on("connection", (socket) => {
   // Receive video data from the client and broadcast to all clients
   socket.on("stream-data", (chunk) => {
     // Broadcast the chunk to all clients except the sender
+    // console.log(chunk);
+
     socket.broadcast.emit("stream-data", chunk);
   });
 

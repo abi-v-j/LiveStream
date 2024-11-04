@@ -22,6 +22,7 @@ const App = () => {
         if (event.data.size > 0) {
           // Send the video chunk to the server in real-time
           socket.emit("stream-data", event.data);
+          socket.emit("check", {data:'correct'});
         }
       };
 
