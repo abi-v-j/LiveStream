@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "it is a LiveStream Platform",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "author": "AJ",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
