@@ -14,8 +14,8 @@ const httpServer = http.createServer(app);
 // Configure the Socket.IO server
 const io = new Server(httpServer, {
   cors: {
-    // origin: " http://localhost:5173", 
-    origin: "https://live-stream-client.vercel.app", // Update with your Vercel frontend
+    origin: " http://localhost:5173", 
+    // origin: "https://live-stream-client.vercel.app", // Update with your Vercel frontend
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
     credentials: true,

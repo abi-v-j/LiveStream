@@ -26,7 +26,6 @@ const LiveStreamViewer = () => {
       }
 
       socket.on("stream-data", (chunk) => {
-        console.log(chunk);
         
         if (chunk && sourceBuffer && !sourceBuffer.updating) {
           const fileReader = new FileReader();
